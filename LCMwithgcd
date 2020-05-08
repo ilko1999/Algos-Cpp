@@ -1,0 +1,17 @@
+#include <iostream>
+using namespace std;
+
+int gcdEuclidRemainder(int a, int b) {
+    return b == 0 ? a : gcdEuclidRemainder(b, a % b);
+}
+
+long long lcm(int a, int b) {
+    return (long long)a * (b / gcdEuclidRemainder(a, b));
+}
+
+int main() {
+
+   cout << lcm(84, 18);
+
+    return 0;
+}
