@@ -1,0 +1,24 @@
+#include <iostream>
+#include <string>
+#include <sstream>
+
+int main()
+{
+    std::ios::sync_with_stdio(0);
+    std::cin.tie(0);
+
+    int X, Y, Z;
+    std::string line;
+    while (std::getline(std::cin, line)) {
+        std::istringstream in{ line };
+        in >> X >> Y >> Z;
+        unsigned long long count = 0;
+        for (int y = 1; y <= Y; y++)
+            for (int x = 1; x <= X; x++)
+                for (int z = 1; z <= Z; z++)
+                {
+                    count += x * z > y * y;
+                }
+        std::cout << count << std::endl;
+    }
+}
