@@ -1,0 +1,90 @@
+#include <iostream>
+using namespace std;
+
+class dynamicArray {
+private:
+	int* arr; //pointing to the actual array
+	int capacity; //size of the array
+	int totalNums; //num of els in the array
+public:
+	dynamicArray() {
+		arr = new int[2];
+		capacity = 2;
+		totalNums = 0;
+	}
+
+	void push(int data) {
+		if (totalNums == capacity) { //need to expand the cap of the array in order to push
+			int* temp = new int[2 * capacity];
+			for (auto i = 0; i < capacity; i++) {
+				temp[i] = arr[i];
+			}
+			delete[] arr;
+
+			capacity *= 2;
+			arr = temp;
+		}
+		arr[totalNums] = data;
+		totalNums++;
+	}
+
+	void push(int data, int index) {
+		if (index == capacity) {
+			push(data);
+		}
+		else {
+			arr[index] = data;
+		}
+	}
+
+	void insertElement(int data, int index) {
+		if (index == capacity) {
+			push(data);
+		}
+		for (auto i = totalNums; i > index; i--) {
+			arr[i] = arr[i - 1];
+		}
+		arr[index] = data;
+		totalNums++;
+	}
+
+	int pop() {
+		int element = arr[totalNums - 1];
+		totalNums--;
+		return element;
+	}
+
+	void pop(int index) {
+		if (index < totalNums) {
+			totalNums--;
+			for (auto j = index; j < totalNums; j++) {
+				arr[j] = arr[j + 1];
+			}
+		}
+	}
+
+	int get(int index) {
+		if (index < capacity) {
+			return arr[index];
+		}
+	}
+
+
+	int length() {
+		return totalNums;
+	}
+
+	void print() {
+		for (auto i = 0; i < totalNums; i++) {
+			cout << arr[i] << " ";
+		}
+		cout << endl;
+	}
+
+};
+
+int main() {
+
+
+	return 0;
+}
