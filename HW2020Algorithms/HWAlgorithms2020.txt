@@ -1,0 +1,82 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <string>
+using namespace std;
+
+
+string padTo(string str, const size_t offset, const char paddingChar = ' ')
+{
+    if (offset > str.size())
+        str.insert(0, offset - str.size(), paddingChar);
+
+    return str;
+}
+
+int get_length(int value) {
+    int length = 0;
+    while (value != 0) {
+        ++length;
+        value /= 10;
+    }
+
+    return length;
+}
+
+int solve4(vector<int> nums, int k) {
+    using Matrix = vector<string>;
+
+    int n = nums.size();
+    sort(nums.begin(), nums.end(), [](int a, int b) { return a > b; });
+    int max_len = get_length(nums[0]);
+
+    Matrix digits(n);
+
+    for (int i = 0; i < n; i++) {
+        digits[i] = padTo(to_string(nums[i]), max_len);
+    }
+
+    int diff = 0;
+    int offset = 0;
+    while (k > 0 && offset < max_len) {
+        int min_index = -1;
+        for (int i = 0; i < digits.size(); i++) {
+            if (digits[i][offset] == ' ')
+                continue;
+
+            if (min_index != -1) {
+                min_index = (digits[min_index][offset] > digits[i][offset]) ? i : min_index;
+            }
+            else {
+                min_index = i;
+            }
+        }
+
+        if (digits[min_index][offset] != '9') {
+            diff += ('9' - digits[min_index][offset]) * pow(10, max_len - offset - 1);
+            digits[min_index][offset] = '9';
+            --k;
+        }
+        else {
+            offset++;
+        }
+    }
+
+    return diff;
+
+}
+
+int main() {
+
+    int n, k;
+    cin >> n >> k;
+    vector<int> nums(n);
+
+    for (int i = 0; i < n; ++i) {
+        cin >> nums[i];
+    }
+
+    cout << solve4(nums, k) << endl;
+
+    return 0;
+}
